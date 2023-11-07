@@ -1,0 +1,4 @@
+﻿  expEvaluator.cpp
+C:\Users\GSTER\Downloads\PL_VS_Programing3 (1)\PL_VS_Programing3\PL_VS_Programing1\PL_VS_Programing1\expEvaluator.cpp(40): warning C4715: 'ExpEvaluator::operatorPrecedence': not all control paths return a value
+C:\Users\GSTER\Downloads\PL_VS_Programing3 (1)\PL_VS_Programing3\PL_VS_Programing1\PL_VS_Programing1\expEvaluator.cpp(108): warning C4715: 'ExpEvaluator::evaluateOperands': not all control paths return a value
+  PL_VS_Programing1.vcxproj -> C:\Users\GSTER\Downloads\PL_VS_Programing3 (1)\PL_VS_Programing3\PL_VS_Programing1\x64\Debug\PL_VS_Programing1.exe
