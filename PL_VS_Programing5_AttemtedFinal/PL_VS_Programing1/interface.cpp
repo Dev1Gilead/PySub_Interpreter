@@ -12,6 +12,7 @@ using namespace std;
 // declorations
 bool isRunning = true;
 bool isHelping = false;
+bool loopRunning = false;
 bool Interface::isCommand(string commandName) {
 	if (commandName == "help"
 		|| commandName == "quit"
@@ -30,11 +31,17 @@ void Interface::startInterface() {
 
 	cout << "\nThis is the start of the interface!\n";
 	while(isRunning){
-		
-		cout << ">>> ";
+
+		if (loopRunning) {
+			cout << "... ";
+		}
+		else {
+			cout << ">>> ";
+		}
+
 		string userInput;
 		getline(cin, userInput);
-		while (userInput.empty()) {
+		while (userInput.empty() && !loopRunning) {
 			getline(cin, userInput);
 		}
 
@@ -68,14 +75,89 @@ void Interface::startInterface() {
 		lexAnalysisExpEvaluator.generateTokens(expEvaluatorCode);
 
 
+		//allInLineCodeLexed.tokenInfo.push_back(lexAnalysisExpEvaluator.tokenInfo[0]);
+		// 
 		// check if user input is an exprestion
-		if (expEvaluator.isExpression(lexAnalysisExpEvaluator) && !isCommand(commandName)) {
-			int postfixResult = expEvaluator.evaluatePostfix(expEvaluator.convertToPostfix(lexAnalysisExpEvaluator));
-			cout << postfixResult << endl;
+		if(isCommand(commandName)){
+		 useCommand(argName, commandName);
 		}
-		else useCommand(argName, commandName);
+		else if ((loopRunning ||
+			lexAnalysisExpEvaluator.tokenInfo[0][0].second == categoryType::KEYWORD 
+			|| lexAnalysisExpEvaluator.tokenInfo[0][0].second == categoryType::COMMENT
+			|| lexAnalysisExpEvaluator.tokenInfo[0][0].second == categoryType::IDENTIFIER && lexAnalysisExpEvaluator.tokenInfo[0][0 + 1].second == categoryType::ASSIGNMENT_OP
+			|| expEvaluator.isExpression(lexAnalysisExpEvaluator)
+			)  && !isCommand(commandName)) {
+
+
+			if (loopRunning ||lexAnalysisExpEvaluator.tokenInfo[0][0].first == "while" || lexAnalysisExpEvaluator.tokenInfo[0][0].first == "if") {
+				if (loopRunning) {
+					getLoop();
+				}
+				else {
+					getLoop();
+					loopRunning = true;
+				}
+				
+			}
+
+
+			//int postfixResult = expEvaluator.evaluatePostfix(expEvaluator.convertToPostfix(lexAnalysisExpEvaluator));
+			//cout << postfixResult << endl;
+		}
+		
 	}
 }
+
+
+void Interface::getLoop() {
+ 
+	if (!loopRunning) {
+		allInLineCodeLexed.tokenInfo.push_back(lexAnalysisExpEvaluator.tokenInfo[0]);
+	}
+	else if (lexAnalysisExpEvaluator.tokenInfo[0].empty()) {
+		inLinePySubi.lineType(allInLineCodeLexed, expEvalFile);
+		loopRunning = false;
+	} 
+	else if (lexAnalysisExpEvaluator.tokenInfo[0][0].second == categoryType::INDENT) {
+		allInLineCodeLexed.tokenInfo.push_back(lexAnalysisExpEvaluator.tokenInfo[0]);
+	}
+	else {
+		cout << "Error, no indent in if or while statment";
+	}
+	//if (lexAnalysisExpEvaluator.tokenInfo[0][0].first == "while") {
+	//	allInLineCodeLexed.tokenInfo.push_back(lexAnalysisExpEvaluator.tokenInfo[0]);
+
+	//	cout << endl;
+	//	cout << "... ";
+	//	string loopInput;
+	//	getline(cin, loopInput);
+	//	while (loopInput.empty()) {
+	//		getline(cin, loopInput);
+	//	}
+
+	//	while (true) {
+	//		cout << "... ";
+	//		
+	//		getline(cin, loopInput);
+	//		while (loopInput.empty()) {
+	//			getline(cin, loopInput);
+	//		}
+
+	//		lexAnalysisExpEvaluator.clear();
+	//		expEvaluatorCode.push_back(loopInput);
+
+	//		//generate tokens based off the user input
+	//		lexAnalysisExpEvaluator.generateTokens(expEvaluatorCode);
+
+	//	}
+
+
+	//}
+	//else if (lexAnalysisExpEvaluator.tokenInfo[0][0].first == "if") {
+
+	//}
+}
+
 
 //helpful declorations
 void Interface::useCommand(string argName, string commandName) {

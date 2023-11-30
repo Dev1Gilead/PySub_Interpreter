@@ -7,3 +7,7 @@ elif y == 5:
 else:
     print("else")
 print("read this!!!")
+
+while x > y:
+    print (x * 4)
+    x = x - 1

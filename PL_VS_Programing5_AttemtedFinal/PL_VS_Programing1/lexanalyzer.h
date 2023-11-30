@@ -53,6 +53,7 @@ public:
     bool isArithOP(char c);
     friend class ExpEvaluator;
     friend class Interpreter;
+    friend class Interface;
     
 };
 

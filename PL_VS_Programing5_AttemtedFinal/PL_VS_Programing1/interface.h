@@ -24,9 +24,13 @@ private:
 	//class with functions for evaluating user input in terminal
 	ExpEvaluator expEvaluator;
 
+	LexicalAnalyzer allInLineCodeLexed;
+
 	ExpEvaluator expEvalFile;
 	Interpreter pysubi;
 	Interpreter inLinePySubi;
+
+
 public:
 	//commands
 	void startInterface();
@@ -36,6 +40,8 @@ public:
 	void show(string);
 	void clear();
 	void run();
+	void runInLine();
+	void getLoop();
 	//tool classes
 	bool isCommand(string); 
 	void useCommand(string, string);
